@@ -10,7 +10,8 @@ public class Msp4AppointmentAppApplication {
 		SpringApplication.run(Msp4AppointmentAppApplication.class, args);
 
 
-		public int a;
+
+
 	}
 
 }
