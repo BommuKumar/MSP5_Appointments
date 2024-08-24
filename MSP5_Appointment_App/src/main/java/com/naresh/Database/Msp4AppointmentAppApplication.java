@@ -8,6 +8,9 @@ public class Msp4AppointmentAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Msp4AppointmentAppApplication.class, args);
+
+
+		public int a;
 	}
 
 }
