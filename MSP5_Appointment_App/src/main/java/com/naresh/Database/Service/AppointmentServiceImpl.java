@@ -5,7 +5,11 @@ import com.naresh.Database.Dto.UserResponseDto;
 import com.naresh.Database.Entity.Appointment;
 import com.naresh.Database.Repository.AppointmentRepository;
 
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,30 @@ public class AppointmentServiceImpl implements AppointmentService{
 		
 		return bookedAppointment!=null? "booked sucessfully ":"something went wrong please try again";
 		
+	}
+
+	@Override
+	public List<LocalDate> viewAvailableDays(int doctorId) {
+
+
+		   List<Timestamp> allBookedDayss=appointmentRepository.findAllBookedDates(doctorId);
+		
+		   List<LocalDate> allBookedDays=allBookedDayss.stream().map(ts->ts.toLocalDateTime().toLocalDate()).collect(Collectors.toList());
+		   
+		   
+		        LocalDate today=LocalDate.now();
+		
+		        List<LocalDate> allDates=today.datesUntil(today.plusWeeks(4)).filter(date->date.getDayOfWeek()!=DayOfWeek.SATURDAY&&date.getDayOfWeek()!=DayOfWeek.SUNDAY).collect(Collectors.toList());
+		
+		
+		
+		   
+		
+		       allDates.removeAll(allBookedDays);
+		
+		
+		
+		return allDates;
 	}
 
 }
