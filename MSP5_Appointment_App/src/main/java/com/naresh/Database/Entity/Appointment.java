@@ -2,6 +2,7 @@ package com.naresh.Database.Entity;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class Appointment {
 	
 	private int doctorId;
 	
+	@Column(name="appointment_Date")
 	private LocalDate appointmentDate;
 	
 	private String status;
