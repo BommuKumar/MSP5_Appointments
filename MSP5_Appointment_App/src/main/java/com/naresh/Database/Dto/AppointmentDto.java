@@ -1,6 +1,8 @@
 package com.naresh.Database.Dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AppointmentDto {
 	
@@ -12,6 +14,10 @@ public class AppointmentDto {
 	private int doctorId;
 	
 	private LocalDate appointmentDate;
+	
+	private LocalTime startTime;
+	
+	private LocalTime endTime;
 	
 	private String status;
 	
@@ -75,23 +81,43 @@ public class AppointmentDto {
 		this.updatedAt = updatedAt;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "AppointmentDto [appointmentId=" + appointmentId + ", patientId=" + patientId + ", doctorId=" + doctorId
-				+ ", appointmentDate=" + appointmentDate + ", status=" + status + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + "]";
+				+ ", appointmentDate=" + appointmentDate + ", startTime=" + startTime + ", endTime=" + endTime
+				+ ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
-	public AppointmentDto(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate, String status,
-			LocalDate createdAt, LocalDate updatedAt) {
+	public AppointmentDto(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate,
+			LocalTime startTime, LocalTime endTime, String status, LocalDate createdAt, LocalDate updatedAt) {
 		super();
 		this.appointmentId = appointmentId;
 		this.patientId = patientId;
 		this.doctorId = doctorId;
 		this.appointmentDate = appointmentDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.status = status;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+	}
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
 	}
 
 	public AppointmentDto() {
