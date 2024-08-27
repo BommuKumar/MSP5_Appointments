@@ -18,4 +18,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query(value="SELECT  a.appointment_Date FROM Appointment a WHERE a.doctor_Id =:doctorId AND a.status = 'booked'",nativeQuery = true)
    public List<Timestamp> findAllBookedDates(@Param("doctorId") int doctorId);
 	
+	
+	
+    public List<Appointment> findByDoctorIdAndAppointmentDate(int doctorId,LocalDate appointmentDate);
+  
+  
 }

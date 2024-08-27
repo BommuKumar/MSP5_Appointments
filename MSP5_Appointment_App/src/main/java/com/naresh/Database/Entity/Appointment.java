@@ -1,6 +1,7 @@
 package com.naresh.Database.Entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +26,10 @@ public class Appointment {
 	
 	@Column(name="appointment_Date")
 	private LocalDate appointmentDate;
+	
+	private LocalDateTime startTime;
+	
+	private LocalDateTime endTime;
 	
 	private String status;
 	
@@ -87,21 +92,40 @@ public class Appointment {
 	public void setUpdatedAt(LocalDate updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
+ 
+	 
 	@Override
 	public String toString() {
 		return "Appointment [appointmentId=" + appointmentId + ", patientId=" + patientId + ", doctorId=" + doctorId
-				+ ", appointmentDate=" + appointmentDate + ", status=" + status + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + "]";
+				+ ", appointmentDate=" + appointmentDate + ", startTime=" + startTime + ", endTime=" + endTime
+				+ ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 
-	public Appointment(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate, String status,
-			LocalDate createdAt, LocalDate updatedAt) {
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
+
+	public Appointment(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate,
+			LocalDateTime startTime, LocalDateTime endTime, String status, LocalDate createdAt, LocalDate updatedAt) {
 		super();
 		this.appointmentId = appointmentId;
 		this.patientId = patientId;
 		this.doctorId = doctorId;
 		this.appointmentDate = appointmentDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.status = status;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
