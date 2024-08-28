@@ -1,8 +1,10 @@
 package com.naresh.Database.Service;
 import org.slf4j.Logger;
+
 import com.naresh.Database.CustomException.*;
 
 import com.naresh.Database.Dto.AppointmentDto;
+import com.naresh.Database.Dto.AppointmentResponseDto;
 import com.naresh.Database.Dto.UpdatedAppointmentDto;
 import com.naresh.Database.Dto.UserResponseDto;
 import com.naresh.Database.Entity.Appointment;
@@ -17,8 +19,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,8 +34,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Log4j2
 @Slf4j
+@Log4j2
 public class AppointmentServiceImpl implements AppointmentService{
 
 	@Autowired
@@ -42,6 +46,8 @@ public class AppointmentServiceImpl implements AppointmentService{
 	
     private static final Logger log = LoggerFactory.getLogger(AppointmentServiceImpl.class);
 	
+   	DateTimeFormatter timeformatter =DateTimeFormatter.ofPattern("hh:mm a");
+
 	@Override
 	public String bookAppointment(AppointmentDto appointmentDto) {
 		 
@@ -131,15 +137,18 @@ public class AppointmentServiceImpl implements AppointmentService{
 		
 		List<LocalTime> fixedslots=	getFixedSlots();
 		
-	     log.info(""+fixedslots.size());
-		
-		
+ 		
+	       log.info(""+fixedslots.toString());
+
 		List<LocalTime> bookedslots=getBookedslots(doctorId,appointmentDate);
 		
-       log.info(""+bookedslots.size());
+       log.info(""+bookedslots.toString());
 		
 		
            fixedslots.removeAll(bookedslots);
+           
+	       log.info(""+fixedslots.toString());
+
            
    	    	DateTimeFormatter formatter =DateTimeFormatter.ofPattern("hh:mm a");
             
@@ -188,7 +197,7 @@ public class AppointmentServiceImpl implements AppointmentService{
 	}
 
 	@Override
-	public String updateAppointment(int appointmentId,UpdatedAppointmentDto updatedAppointmentDto) {
+	public String RescheduleAppointment(int appointmentId,UpdatedAppointmentDto updatedAppointmentDto) {
 
 
 		Appointment appointment =appointmentRepository.findById(appointmentId).orElseThrow(()->new AppointmentNotFound("Appointment not found with this id"+appointmentId));		
@@ -241,4 +250,60 @@ public class AppointmentServiceImpl implements AppointmentService{
  	 	}
 		return null;
 	
-}}
+}
+
+	@Override
+	public String cancelAppointment(int appointmentId) {
+
+		UserResponseDto userResponseDto=(UserResponseDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		
+		 Appointment appointment=appointmentRepository.findByAppointmentIdAndPatientId(appointmentId,userResponseDto.getPatientId());
+		
+		
+		 LocalDateTime appointmentTime=appointment.getStartTime();
+		 
+		 LocalDateTime currentTime=LocalDateTime.now();
+		
+		 long hoursDifference=ChronoUnit.HOURS.between(currentTime, appointmentTime);
+		
+		if(hoursDifference<24)
+		{
+		  throw new IllegalStateException("yoc cant cancel appointment with 24 hours before starting");	
+		}
+		
+		
+		appointment.setStatus("Cancelled");
+		
+		appointmentRepository.save(appointment);
+		
+		return "your Apppointment Cancelled sucessfu;ly ";
+	}
+
+	@Override
+	public List<AppointmentResponseDto> getAllAppointments() {
+
+       UserResponseDto userResponseDto= (UserResponseDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+     
+		List<Appointment> fixedAppointment=appointmentRepository.findByDoctorIdAndStatus(userResponseDto.getDoctorId(),"scheduled");
+		
+		if(fixedAppointment.isEmpty())
+		{
+		throw new AppointmentsNotFound("you dont have any appointments till now");	
+		}
+		
+		return fixedAppointment.stream().map(appointment->
+		{
+			
+			AppointmentResponseDto appointmentResponseDto=modelMapper.map(appointment, AppointmentResponseDto.class);
+			
+			appointmentResponseDto.setStartTime(appointment.getStartTime().toLocalTime().toString());
+			
+			appointmentResponseDto.setEndTime(appointment.getEndTime().toLocalTime().format(timeformatter));
+			
+			return appointmentResponseDto;
+			
+		}).collect(Collectors.toList());
+		 
+		 //.collect(Collectors.groupingBy(AppointmentResponseDto::getDoctorId, Collectors.toList())
+	}}
