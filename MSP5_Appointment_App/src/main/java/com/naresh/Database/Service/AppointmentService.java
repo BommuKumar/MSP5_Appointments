@@ -3,8 +3,10 @@ package com.naresh.Database.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 import com.naresh.Database.Dto.AppointmentDto;
+import com.naresh.Database.Dto.AppointmentResponseDto;
 import com.naresh.Database.Dto.UpdatedAppointmentDto;
 
 public interface AppointmentService {
@@ -18,7 +20,18 @@ public interface AppointmentService {
 	public List<String> getAvailableSlots(int doctorId,LocalDate appointmentDate);
 
 	
-	public String updateAppointment(int appointmentId,UpdatedAppointmentDto updatedAppointmentDto);
+	public String RescheduleAppointment(int appointmentId,UpdatedAppointmentDto updatedAppointmentDto);
+	
+	
+	public String cancelAppointment(int appointmentId);
+	
+	
+	// . Doctor's Daily Schedule Overview
+	
+	public  List<AppointmentResponseDto> getAllAppointments();
+	
+
+	
 	
 	
 }
