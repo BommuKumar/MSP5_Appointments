@@ -27,5 +27,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     
     public List<Appointment> findByDoctorIdAndStatus(int doctorId,String status);
 
+   
+    @Query(value="SELECT a.* FROM Appointment a WHERE a.patient_Id = :patientId " +
+            "AND (:doctorId is null or a.doctor_Id=:doctorId)"+
+    		"AND (:status is null or a.status=:status)"+
+            "AND(:appointmentDate is null or a.appointment_Date=to_date(:appointmentDate,'yyyy-mm-dd'))",nativeQuery=true)
+   public List<Appointment>  filterPAppointment(@Param("patientId")int patinetId,@Param("doctorId")Integer doctorId,@Param("appointmentDate")String appointmentDate,@Param("status")String status);
+
+
+    @Query(value="SELECT a.* FROM Appointment a WHERE a.doctor_Id = :doctorId " +
+            "AND (:patientId is null or a.patient_Id=:patientId)"+
+    		"AND (:status is null or a.status=:status)"+
+            "AND(:appointmentDate is null or a.appointment_Date=to_date(:appointmentDate,'yyyy-mm-dd'))",nativeQuery=true)
+   public List<Appointment>  filterDAppointment(@Param("doctorId")int doctorId,@Param("patientId")Integer patinetId,@Param("appointmentDate")String appointmentDate,@Param("status")String status);
+
+
 
 }

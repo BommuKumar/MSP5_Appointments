@@ -1,13 +1,11 @@
 package com.naresh.Database.Dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class AppointmentDto {
+public class AppointmentsResDto {
 	
-	
-   private int appointmentId;
+private int appointmentId;
 	
 	private int patientId;
 	
@@ -15,15 +13,11 @@ public class AppointmentDto {
 	
 	private LocalDate appointmentDate;
 	
-	private LocalTime startTime;
+	private String startTime;
 	
-	private LocalTime endTime;
+	private String endTime;
 	
 	private String status;
-//	
-//	private LocalDate createdAt;
-//	
-//	private LocalDate updatedAt;
 
 	public int getAppointmentId() {
 		return appointmentId;
@@ -57,6 +51,22 @@ public class AppointmentDto {
 		this.appointmentDate = appointmentDate;
 	}
 
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -65,22 +75,15 @@ public class AppointmentDto {
 		this.status = status;
 	}
 
-	 
-
-
-
-	 
- 
-
 	@Override
 	public String toString() {
-		return "AppointmentDto [appointmentId=" + appointmentId + ", patientId=" + patientId + ", doctorId=" + doctorId
-				+ ", appointmentDate=" + appointmentDate + ", startTime=" + startTime + ", endTime=" + endTime
-				+ ", status=" + status + "]";
+		return "AppointmentsResDto [appointmentId=" + appointmentId + ", patientId=" + patientId + ", doctorId="
+				+ doctorId + ", appointmentDate=" + appointmentDate + ", startTime=" + startTime + ", endTime="
+				+ endTime + ", status=" + status + "]";
 	}
 
-	public AppointmentDto(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate,
-			LocalTime startTime, LocalTime endTime, String status) {
+	public AppointmentsResDto(int appointmentId, int patientId, int doctorId, LocalDate appointmentDate,
+			String startTime, String endTime, String status) {
 		super();
 		this.appointmentId = appointmentId;
 		this.patientId = patientId;
@@ -91,24 +94,13 @@ public class AppointmentDto {
 		this.status = status;
 	}
 
-	public LocalTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
-	}
-
-	public LocalTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(LocalTime endTime) {
-		this.endTime = endTime;
-	}
-
-	public AppointmentDto() {
+	public AppointmentsResDto() {
 		super();
 	}
+	
+	
+	
+	
+//	
 
 }
