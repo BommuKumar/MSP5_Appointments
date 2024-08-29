@@ -26,7 +26,9 @@ import com.naresh.Database.CustomException.SlotAlreadyBooked;
 import com.naresh.Database.CustomException.SlotsNotAvailable;
 import com.naresh.Database.Dto.AppointmentDto;
 import com.naresh.Database.Dto.AppointmentResponseDto;
+import com.naresh.Database.Dto.AppointmentsResDto;
 import com.naresh.Database.Dto.UpdatedAppointmentDto;
+import com.naresh.Database.Entity.Appointment;
 import com.naresh.Database.Service.AppointmentService;
 import com.naresh.Database.Service.AppointmentServiceImpl;
 
@@ -117,7 +119,24 @@ public class AppointmentController {
 	}
 	
 	
+    //	@PreAuthorize("hasRole('ROLE_Patient')")
 	
+       @GetMapping(path="retrive/p/Appointment")
+	
+    	public ResponseEntity<List<AppointmentsResDto>> filterPAppointment(@RequestParam(name="doctorId",required=false) Integer doctorId,@RequestParam(name="appointmentDate",required=false) String appointmentDate, @RequestParam(name="status",required=false) String status) {
+	 
+		return ResponseEntity.status(HttpStatus.OK).body(appointmentService.filteredAppointment(doctorId, appointmentDate, status));
+    	} 
+	
+		     // @PreAuthorize("hasRole('ROLE_Doctor')")
+		
+	          @GetMapping(path="retrive/d/Appointment")
+		
+	    	  public ResponseEntity<List<AppointmentsResDto>> filterDAppointment(@RequestParam(name="patientId",required=false) Integer patientId,@RequestParam(name="appointmentDate",required=false) String appointmentDate, @RequestParam(name="status",required=false) String status) {
+		 
+			 return ResponseEntity.status(HttpStatus.OK).body(appointmentService.filteredDAppointment(patientId, appointmentDate, status));
+		     
+	          }
 	 
 	
 	

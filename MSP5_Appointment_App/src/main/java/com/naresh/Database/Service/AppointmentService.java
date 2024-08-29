@@ -7,7 +7,9 @@ import java.util.Map;
 
 import com.naresh.Database.Dto.AppointmentDto;
 import com.naresh.Database.Dto.AppointmentResponseDto;
+import com.naresh.Database.Dto.AppointmentsResDto;
 import com.naresh.Database.Dto.UpdatedAppointmentDto;
+import com.naresh.Database.Entity.Appointment;
 
 public interface AppointmentService {
 	
@@ -31,7 +33,13 @@ public interface AppointmentService {
 	public  List<AppointmentResponseDto> getAllAppointments();
 	
 
+	//  patinets filters their appointmens
 	
 	
-	
+	public List<AppointmentsResDto>  filteredAppointment(Integer doctorId,String appointmentDate,String status);
+	 
+	 
+
+	public List<AppointmentsResDto>  filteredDAppointment(Integer patientid,String appointmentDate,String status);
+	 
 }

@@ -5,6 +5,7 @@ import com.naresh.Database.CustomException.*;
 
 import com.naresh.Database.Dto.AppointmentDto;
 import com.naresh.Database.Dto.AppointmentResponseDto;
+import com.naresh.Database.Dto.AppointmentsResDto;
 import com.naresh.Database.Dto.UpdatedAppointmentDto;
 import com.naresh.Database.Dto.UserResponseDto;
 import com.naresh.Database.Entity.Appointment;
@@ -306,4 +307,30 @@ public class AppointmentServiceImpl implements AppointmentService{
 		}).collect(Collectors.toList());
 		 
 		 //.collect(Collectors.groupingBy(AppointmentResponseDto::getDoctorId, Collectors.toList())
+	}
+
+	@Override
+	public List<AppointmentsResDto> filteredAppointment(Integer doctorId, String appointmentDate, String status) {
+		         
+		UserResponseDto user=(UserResponseDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		List<Appointment> appointments= appointmentRepository.filterPAppointment(user.getPatientId(), doctorId, appointmentDate, status);
+		
+		return appointments.stream().map(appointment->modelMapper.map(appointment, AppointmentsResDto.class)).collect(Collectors.toList());
+
+	}
+
+	@Override
+	public List<AppointmentsResDto> filteredDAppointment(Integer patientid, String appointmentDate, String status) {
+		 
+         
+		UserResponseDto user=(UserResponseDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		List<Appointment> appointments= appointmentRepository.filterDAppointment(user.getDoctorId(), patientid, appointmentDate, status);
+		
+		return appointments.stream().map(appointment->modelMapper.map(appointment, AppointmentsResDto.class)).collect(Collectors.toList());
+		
+		
 	}}
